@@ -1,0 +1,5 @@
+name: 'Additional Blocks'
+type: module
+description: 'Enables custom additional blocks for the website.'
+package: Carbono
+core: 8.x

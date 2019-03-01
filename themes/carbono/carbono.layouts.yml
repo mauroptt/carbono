@@ -1,0 +1,22 @@
+frontpage:
+  label: Front Page
+  category: Basic Page
+  path: layouts/page
+  #icon: blog.png
+  #css: blog.css
+  template: front
+  regions:
+    header:
+      label: header
+    row1left:
+      label: row1-left
+    row1right:
+      label: row1-right
+    row2:
+      label: row2
+    row3left:
+      label: row3-left
+    row3right:
+      label: row3-right
+    row4:
+      label: row4

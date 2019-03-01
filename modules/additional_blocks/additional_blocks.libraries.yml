@@ -1,0 +1,6 @@
+js_helper:
+  version: 1.x
+  js:
+    js/additional_blocks.js: {}
+#  dependencies:
+#    - core/jquery

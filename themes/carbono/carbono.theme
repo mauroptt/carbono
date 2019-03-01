@@ -1,0 +1,246 @@
+<?php
+/**
+ * @file
+ * Bootstrap sub-theme.
+ *
+ * Place your custom PHP code in this file.
+ */
+function carbono_preprocess_node(&$variables) {
+  if (isset($variables['elements']['#view_mode'])) {
+    if ($variables['node']->getType() == 'producto' && $variables['elements']['#view_mode'] == 'producto_mosaico') {
+      if (!empty($variables['node']->get('body')->value)) {
+        $variables['descripcion'] = t($variables['node']->get('body')->value);
+      }
+      $fotos = $variables['node']->get('field_producto_fotos');
+      if (count($fotos->referencedEntities()) > 0) {
+        foreach ($fotos->referencedEntities() as $foto) {
+          $image_url = \Drupal\image\Entity\ImageStyle::load('medium')->buildUrl($foto->getFileUri());
+          $variables['fotos'][] = [
+            '#markup' => '<img src="'.$image_url.'">',
+          ];
+        }
+      }
+
+      if (count($variables['node']->get('field_producto_tipo')->getValue()) > 0) {
+        $formatted_icons = [];
+        $categories = $variables['node']->get('field_producto_tipo')->getValue();
+        $cats = [];
+        foreach ($categories as $category) {
+          $term = \Drupal\taxonomy\Entity\Term::load($category['target_id']);
+          $icons = $term->get('field_tipo_de_producto_icono');
+          if (count($icons->referencedEntities()) > 0) {
+            foreach ($icons->referencedEntities() as $icon) {
+              $image_url = \Drupal\image\Entity\ImageStyle::load('thumbnail')->buildUrl($icon->getFileUri());
+              $formatted_icons[] = [
+                '#markup' => '<img src="'.$image_url.'">',
+              ];
+            }
+          }
+        }
+        $variables['categories'] = array(
+          '#theme' => 'item_list',
+          '#items' => $formatted_icons,
+          '#type' => 'ul',
+          '#attributes' => array(
+            'class' => 'product-categories',
+          ),
+        );
+      }
+    }
+
+    if ($variables['node']->getType() == 'producto' && $variables['elements']['#view_mode'] == 'full') {
+      if (!empty($variables['node']->get('body')->value)) {
+        $variables['descripcion'] = t($variables['node']->get('body')->value);
+      }
+      $fotos = $variables['node']->get('field_producto_fotos');
+      if (count($fotos->referencedEntities()) > 0) {
+        foreach ($fotos->referencedEntities() as $foto) {
+          $image_url = \Drupal\image\Entity\ImageStyle::load('original')->buildUrl($foto->getFileUri());
+          $variables['fotos'][] = [
+            '#markup' => '<img src="'.$image_url.'">',
+          ];
+        }
+      }
+
+      if (count($variables['node']->get('field_producto_tipo')->getValue()) > 0) {
+        $formatted_icons = [];
+        $categories = $variables['node']->get('field_producto_tipo')->getValue();
+        $cats = [];
+        foreach ($categories as $category) {
+          $term = \Drupal\taxonomy\Entity\Term::load($category['target_id']);
+          $icons = $term->get('field_tipo_de_producto_icono');
+          if (count($icons->referencedEntities()) > 0) {
+            foreach ($icons->referencedEntities() as $icon) {
+              $image_url = \Drupal\image\Entity\ImageStyle::load('thumbnail')->buildUrl($icon->getFileUri());
+              $formatted_icons[] = [
+                '#markup' => '<img src="'.$image_url.'">',
+              ];
+            }
+          }
+        }
+        $variables['categories'] = array(
+          '#theme' => 'item_list',
+          '#items' => $formatted_icons,
+          '#type' => 'ul',
+          '#attributes' => array(
+            'class' => 'product-categories',
+          ),
+        );
+      }
+    }
+  }
+
+  if ($variables['node']->getType() == 'bloque_de_contenido') {
+    $fondo = $variables['node']->get('field_imagen_de_fondo');
+    $variables['ancho'] = $variables['node']->get('field_ancho_de_bloque')->getValue()[0]['value'];
+
+    if (count($fondo->referencedEntities()) > 0) {
+      foreach ($fondo->referencedEntities() as $foto) {
+        $image_url = \Drupal\image\Entity\ImageStyle::load('original')->buildUrl($foto->getFileUri());
+        $variables['fondo'] = [
+          '#markup' => $image_url,
+        ];
+      }
+    }
+
+    $tipo = $variables['node']->get('field_tipo_de_bloque')->getValue()[0]['value'];
+    $variables['tipo'] = $tipo;
+
+    if ($tipo == 'publicidad') {
+      if ($variables['node']->get('field_enlace')->getValue()[0]['uri'] !== NULL) {
+        $variables['link'] = \Drupal\Core\Url::fromUri($variables['node']->get('field_enlace')->getValue()[0]['uri']);
+      }
+    } else {
+      if ($tipo == 'banner_enlaces') {
+        $options = array('attributes' => array('class' => ['btn', 'btn-primary']));
+      } else {
+        $options = array('attributes' => array('class' => 'btn-carbono button button--primary js-form-submit form-submit btn-primary btn'));
+      }
+
+      //if ($variables['node']->get('field_enlace')->getValue()[0]['uri'] !== NULL) {
+      if (isset($variables['node']->get('field_enlace')->getValue()[0]['uri'])) {
+        $variables['link'] = [
+          '#title' => $variables['node']->get('field_enlace')->getValue()[0]['title'],
+          '#type' => 'link',
+          '#url' => \Drupal\Core\Url::fromUri($variables['node']->get('field_enlace')->getValue()[0]['uri'], $options),
+          '#attributes' => [
+//            'target' => '_blank',
+          ]
+        ];
+        $url = \Drupal\Core\Url::fromUri($variables['node']->get('field_enlace')->getValue()[0]['uri'])->toString();
+        $variables['link_url'] = $url;
+      }
+
+      if (isset($variables['node']->get('field_enlace')->getValue()[1]['uri'])) {
+        $variables['link2'] = [
+          '#title' => $variables['node']->get('field_enlace')->getValue()[1]['title'],
+          '#type' => 'link',
+          '#url' => \Drupal\Core\Url::fromUri($variables['node']->get('field_enlace')->getValue()[1]['uri'], $options)
+        ];
+      }
+    }
+
+    if ($variables['node']->get('field_ancho_de_bloque')->getValue()[0] !== NULL) {
+      $variables['ancho'] = $variables['node']->get('field_ancho_de_bloque')->getValue()[0]['value'];
+    } else {
+      $variables['ancho'] = '';
+    }
+
+//    new \dBug($ancho); die();
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function carbono_theme_suggestions_page_alter(array &$suggestions, array $variables) {
+  if ($node = \Drupal::routeMatch()->getParameter('node')) {
+    $content_type = $node->bundle();
+    $suggestions[] = 'page__'.$content_type;
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function carbono_theme_suggestions_slick_wrapper_alter(array &$suggestions, array $variables) {
+  if (isset($variables['element']['#settings']['view_name'])) {
+    $suggestions[] = 'slick_wrapper__'.$variables['element']['#settings']['view_name'];
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function carbono_theme_suggestions_slick_slide_alter(array &$suggestions, array $variables) {
+  if (isset($variables['element']['#settings']['view_name'])) {
+    $suggestions[] = 'slick_slide__'.$variables['element']['#settings']['view_name'];
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function carbono_preprocess_region(&$variables) {
+  if ($variables['region'] == 'header') {
+    $variables['elements']['carbono_page_title']['#weight'] = -10;
+    $variables['elements']['carbono_local_tasks']['#weight'] = 10;
+  }
+}
+
+function carbono_preprocess_page(&$variables) {
+  $variables['page']['header']['carbono_page_title']['#weight'] = -100;
+  $variables['descripcion'] = '';
+  $variables['slogan'] = '';
+
+  if (isset($variables['node'])) {
+    if (!empty($variables['node']->body->value)) {
+      $variables['descripcion'] = $variables['node']->get('body')->value;
+      $variables['slogan'] = t($variables['node']->body->value);
+    }
+    $fields = $variables['node']->getFields();
+    if (array_key_exists('field_fondo_de_encabezado', $fields)) {
+      $fotos = $variables['node']->get('field_fondo_de_encabezado');
+      if (count($fotos->referencedEntities()) > 0) {
+        foreach ($fotos->referencedEntities() as $foto) {
+          $image_url = \Drupal\image\Entity\ImageStyle::load('original')->buildUrl($foto->getFileUri());
+          $variables['portada'][] = [
+            '#markup' => '<img src="'.$image_url.'">',
+          ];
+          $variables['portada_url'] = $image_url;
+        }
+      }
+    }
+  }
+
+  $block = \Drupal\block\Entity\Block::load('socialblockmenu');
+  $variables['socialblockmenu'] = \Drupal::entityTypeManager()
+    ->getViewBuilder('block')
+    ->view($block);
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function carbono_preprocess_block(&$variables) {
+  if (isset($variables['region'])) {
+    if ($variables['region'] == 'header') {
+      $variables['elements']['carbono_page_title']['#weight'] = -10;
+      $variables['elements']['carbono_local_tasks']['#weight'] = 10;
+    }
+  }
+}
+
+function carbono_preprocess_page_title(&$variables) {
+  if ($node = \Drupal::routeMatch()->getParameter('node')) {
+    $variables['title'] = $node->title->value;
+  }
+}
+
+/**
+ * Implements template_preprocess_slick_slide()
+ */
+function carbono_preprocess_slick_slide(&$variables) {
+  if (isset($variables['element']['#item']['slide']['#items']))
+    $variables['item']['background'] = $variables['element']['#item']['slide']['#items'][0]['settings']['image_url'];
+}
