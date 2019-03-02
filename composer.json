@@ -6,7 +6,11 @@
     "require": {
         "composer/installers": "^1.0.24",
         "wikimedia/composer-merge-plugin": "^1.4",
-        "drupal/isotope": "1.x-dev"
+        "drupal/isotope": "1.x-dev",
+        "drupal/core": "^8.6.10",
+        "drupal/admin_toolbar": "^1.26",
+        "drupal/ctools": "^3.2",
+        "drupal/slick_extras": "^1.0@RC"
     },
     "replace": {
         "drupal/core": "^8.6"
