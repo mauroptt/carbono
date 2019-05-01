@@ -10,7 +10,8 @@
         "drupal/core": "^8.6.10",
         "drupal/admin_toolbar": "^1.26",
         "drupal/ctools": "^3.2",
-        "drupal/slick_extras": "^1.0@RC"
+        "drupal/slick_extras": "^1.0@RC",
+        "twig/twig": "1.37.1"
     },
     "replace": {
         "drupal/core": "^8.6"
@@ -22,6 +23,12 @@
         "autoloader-suffix": "Drupal8"
     },
     "extra": {
+
+        "patches": {
+            "drupal/isotope": {
+                "Fix for object context error": "patches/isotope.patch"
+            }
+        },
         "_readme": [
             "By default Drupal loads the autoloader from ./vendor/autoload.php.",
             "To change the autoloader you can edit ./autoload.php.",

@@ -160,7 +160,12 @@
             {{ page.header.carbono_page_title }}
             <div class="intro-text">{{ slogan }}</div>
           </div>
-          <div id="scroll-indicator"></div>
+          {# <div id="scroll-indicator"></div> #}
+          <div id="scroll-indicator" class="scroll-downs">
+            <div class="mousey">
+              <div class="scroller"></div>
+            </div>
+          </div>
         </div>
          {% if is_admin %}
           <div class="col-sm-12" role="local-tasks">

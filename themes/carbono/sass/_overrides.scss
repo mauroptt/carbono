@@ -41,14 +41,22 @@ $color-running: #287091;
   font-family: 'Raleway', sans-serif;
 }
 
-//div {
-//  display: none;
-//}
+#barba-wrapper {
+  width: 100%;
+
+  .barba-container {
+    overflow: hidden;
+  }
+}
 
 // Body
 body {
   margin-top: 0;
   background: #000;
+
+  .path-user #navbar {
+    display: none;
+  }
 }
 
 .panels-ipe-block-plugin-form input {
@@ -328,6 +336,7 @@ div[role=heading] {
   }
 
   #scroll-indicator {
+    /*
     background-image: url('../images/btn_arrow.png');
     @include image-2x("../images/btn_arrow@2x.png", 31px, 32px);
     cursor: pointer;
@@ -336,7 +345,7 @@ div[role=heading] {
     background-size: 100%;
     -webkit-background-size: 100%;
     background-color: transparent;
-    position: absolute;
+    position: absolute; */
     bottom: 10px;
     top: initial;
     width: 32px;
@@ -346,17 +355,53 @@ div[role=heading] {
   }
 
   #scroll-indicator.hidden {
-    animation: fadeout 0.8s linear 0.8s;
+    // animation: fadeout 0.8s linear 0.8s;
   }
 
   @keyframes example {
-    from {opacity: 0.2;}
-    to {opacity: 1.0;}
+    // from {opacity: 0.2;}
+    // to {opacity: 1.0;}
   }
 
   @keyframes fadeout {
-    from {opacity: 1.0;}
-    to {opacity: 0.0;}
+    // from {opacity: 1.0;}
+    // to {opacity: 0.0;}
+  }
+
+  .scroll-downs {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    
+    width :34px;
+    height: 55px;
+  }
+  .mousey {
+    width: 3px;
+    padding: 10px 15px;
+    height: 35px;
+    border: 2px solid #fff;
+    border-radius: 25px;
+    opacity: 0.75;
+    box-sizing: content-box;
+  }
+  .scroller {
+    width: 3px;
+    height: 10px;
+    border-radius: 25%;
+    background-color: #fff;
+    animation-name: scroll;
+    animation-duration: 2.2s;
+    animation-timing-function: cubic-bezier(.15,.41,.69,.94);
+    animation-iteration-count: infinite;
+  }
+  @keyframes scroll {
+    0% { opacity: 0; }
+    10% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(15px); opacity: 0;}
   }
 }
 
@@ -560,7 +605,8 @@ h1.page-header {
 
 #slick-views-slide-facebook-block-1-1 > .slick__arrow button,
 #slick-views-slide-empresas-block-1-1 > .slick__arrow button {
-  height: 100%;
+  // height: 100%;
+  height: 90vh;
 }
 
 #slick-views-slide-facebook-block-1-1 > .slick__arrow .slick-prev,
@@ -584,7 +630,8 @@ h1.page-header {
 
 #slick-views-slide-facebook-block-1-1 .slick__arrow,
 #slick-views-slide-empresas-block-1-1 .slick__arrow {
-  position: inherit;
+  // position: inherit;
+  // height: 80%;
 }
 
 // Bootstrap modals
@@ -1485,6 +1532,20 @@ textarea.form-control, .form-textarea {
 
 @-moz-keyframes cssload-spin {
   100%{ -moz-transform: rotate(360deg); transform: rotate(360deg); }
+}
+
+// Fix for file boxes
+.form-managed-file {
+  position: relative;
+}
+
+a, .webform-file-button {
+  cursor: pointer;
+}
+.webform-file-button-input {
+  position: absolute;
+  left: -1000px;
+  top: 0;
 }
 
 // Loader

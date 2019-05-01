@@ -1,0 +1,26 @@
+diff --git a/isotope.theme.inc b/isotope.theme.inc
+index 531eabe..eb83d91 100644
+--- a/isotope.theme.inc
++++ b/isotope.theme.inc
+@@ -68,6 +68,8 @@ function template_preprocess_isotope_grid(&$variables) {
+     ],
+   ];
+ 
++  $isotope = IsotopeController::create(Drupal::getContainer());
++
+   foreach ($variables['items'] as $item) {
+     $sorts = '';
+     $item['data'] = !empty($item['data']) ? $item['data'] : [];
+@@ -76,10 +78,10 @@ function template_preprocess_isotope_grid(&$variables) {
+         $value = [$value];
+       }
+       foreach ($value as $sort) {
+-        $sorts .= '<div class="js-sort-data ' . $key . '">' . IsotopeController::sanitize($sort) . '</div>';
++        $sorts .= '<div class="js-sort-data ' . $key . '">' . $isotope->sanitize($sort) . '</div>';
+       }
+       // Sanitize value for the class name below.
+-      $item['data'][$key] = IsotopeController::sanitize($value);
++      $item['data'][$key] = $isotope->sanitize($value);
+     }
+     $classes = array_values($item['data']);
+     $classes[] = 'js-isotope-element';
